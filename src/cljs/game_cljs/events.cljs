@@ -8,7 +8,8 @@
  ::initialize-db
  (fn [_ _]
    {:snake (db/cria-snake)
-    :maca (db/cria-maca)}))
+    :maca (db/cria-maca)
+    :feedback "Jogando..."}))
 
 (rf/reg-event-db 
   :timer                  
@@ -22,4 +23,18 @@
   (fn [db [_ nova-direcao]]   
     (assoc db 
       :snake (db/vira (:snake db) nova-direcao)
+))) 
+
+(rf/reg-event-db 
+  :ganhou
+  (fn [db [_ nova-direcao]]   
+    (assoc db 
+      :feedback "Ganhou!"
+))) 
+
+(rf/reg-event-db 
+  :perdeu
+  (fn [db [_ nova-direcao]]   
+    (assoc db 
+      :feedback "Perdeu!"
 ))) 

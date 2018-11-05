@@ -2,6 +2,7 @@
   (:require
    [re-frame.core :as rf]
    [game-cljs.subs :as subs]
+   [game-cljs.db :as db]
    [game-cljs.events :as events]
    ))
 
@@ -10,17 +11,13 @@
 
 ;; Constantes
 (def tam-ret 15)
-(def w-max 10)
-(def h-max 10)
 
 ;; Funcoes
 (defn dispatch-timer-event
   []
   (let [now (js/Date.)]
     (rf/dispatch [:timer now])))
-(defonce do-timer (js/setInterval dispatch-timer-event 500))
-
-
+(defonce do-timer (js/setInterval dispatch-timer-event 200))
 
 ;; View
 (defn desenha [xy cor]
@@ -44,16 +41,18 @@
   (retangulo (* x tam-ret) (* y tam-ret) cor))
 
 (defn desenha-mundo []
-  (for [x (range w-max)]
-        (for [y (range h-max)]
+  (for [x (range db/w-max)]
+        (for [y (range db/h-max)]
           (->retangulo x y "skyblue"))))
 
 (defn main-panel []
   (let [
         snake (rf/subscribe [:snake])
         maca (rf/subscribe [:maca])
+        feedback (rf/subscribe [:feedback])
         ]
     [:div
+     [:div (str @feedback)]
      [:table [:tbody 
               [:tr
                [:td]

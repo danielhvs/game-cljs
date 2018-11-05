@@ -1,9 +1,9 @@
-(ns game-cljs.db)
+(ns game-cljs.db
+  (:require [re-frame.core :as rf])) 
 
-;; FIXME: duplicacao
-(def tam-ret 15)
-(def w-max 10)
-(def h-max 10)
+(def w-max 20)
+(def h-max 20)
+(def tam-ganhar 8)
 
 (def direcoes
   {:esquerda [-1 0]
@@ -13,7 +13,7 @@
 
 (defn cria-snake []
   {
-   :corpo [[5 3] [4 3] [3 3] [2 3]]
+   :corpo [[6 3] [5 3] [4 3] [3 3] [2 3]]
    :direcao :direita
    :cor "green"
    })
@@ -23,6 +23,25 @@
    :cor "red"
    }
 )
+
+(defn corpo-bateu-em-si [{:keys [corpo] :as snake}]
+  (let [head (first corpo)]
+    (contains? (set (rest corpo)) head)))
+
+(defn corpo-fora-limites [[head-x head-y]]
+  (or
+   (>= head-x w-max)
+   (< head-x 0)
+   (>= head-y h-max)
+   (< head-y 0)
+))
+
+(defn perdeu? [snake]
+  (or (corpo-bateu-em-si snake)
+      (corpo-fora-limites (first (:corpo snake)))))
+
+(defn ganhou? [{:keys [corpo]}]
+  (>= (count corpo) tam-ganhar))
 
 (defn move [{:keys [corpo direcao] :as snake} & comeu-maca]
   (assoc snake :corpo
@@ -40,9 +59,17 @@
   (= head maca))
 
 (defn proximo-estado [snake maca]
-  (if (comendo-maca? snake maca)
-    (move snake :grow)
-    (move snake)))
+  (if (ganhou? snake)
+    (do
+      (rf/dispatch [:ganhou])
+      snake)
+    (if (perdeu? snake) 
+      (do
+        (rf/dispatch [:perdeu])
+        snake)
+      (if (comendo-maca? snake maca)
+        (move snake :grow)
+        (move snake)))))
 
 (defn proximo-estado-maca [snake maca]
   (if (comendo-maca? snake maca) 

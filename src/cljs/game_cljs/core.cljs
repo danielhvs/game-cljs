@@ -7,7 +7,6 @@
    [game-cljs.config :as config]
    ))
 
-
 (defn dev-setup []
   (when config/debug?
     (enable-console-print!)
@@ -21,4 +20,8 @@
 (defn ^:export init []
   (re-frame/dispatch-sync [::events/initialize-db])
   (dev-setup)
+  (mount-root))
+
+(defn -main []
+  (re-frame/dispatch-sync [::events/initialize-db])
   (mount-root))

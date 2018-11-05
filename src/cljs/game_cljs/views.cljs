@@ -2,6 +2,7 @@
   (:require
    [re-frame.core :as rf]
    [game-cljs.subs :as subs]
+   [game-cljs.events :as events]
    ))
 
 (declare ->retangulo)
@@ -53,17 +54,33 @@
         maca (rf/subscribe [:maca])
         ]
     [:div
-     [:div [:button "->"]]
-     [:div [:button "<-"]]
-     [:div [:center
-            [:svg 
-             (let [w 800 h 600]
-               {
-                :view-box (str "0 0 " w " " h)
-                :width w 
-                :height h})
-             (desenha-mundo)
-             (desenha-maca @maca)
-             (desenha-snake @snake)
-             ]]]]
-    ))
+     [:table [:tbody 
+              [:tr
+               [:td]
+               [:td [:button {:on-click #(rf/dispatch [:muda-direcao :cima])} "^"]]
+               [:td]
+               ] 
+              [:tr
+               [:td [:button {:on-click #(rf/dispatch [:muda-direcao :esquerda])} "<"]]
+               [:td [:button {:on-click #(rf/dispatch [::events/initialize-db])} "+"]]
+               [:td [:button {:on-click #(rf/dispatch [:muda-direcao :direita])} ">"]]
+               ]
+              [:tr 
+               [:td]
+               [:td [:button {:on-click #(rf/dispatch [:muda-direcao :baixo])} "u"]]
+               [:td]
+               ]
+              ]]
+
+     [:div
+      [:svg 
+       (let [w 800 h 600]
+         {
+          :view-box (str "0 0 " w " " h)
+          :width w 
+          :height h})
+       (desenha-mundo)
+       (desenha-maca @maca)
+       (desenha-snake @snake)
+       ]]]
+))

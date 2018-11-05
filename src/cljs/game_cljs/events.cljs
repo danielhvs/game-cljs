@@ -15,7 +15,11 @@
   (fn [db [_ new-time]]   
     (assoc db 
       :snake (db/proximo-estado (:snake db) (:maca db))
-      :maca (db/proximo-estado-maca (:snake db) (:maca db))
+      :maca (db/proximo-estado-maca (:snake db) (:maca db)))))
 
+(rf/reg-event-db 
+  :muda-direcao
+  (fn [db [_ nova-direcao]]   
+    (assoc db 
+      :snake (db/vira (:snake db) nova-direcao)
 ))) 
-

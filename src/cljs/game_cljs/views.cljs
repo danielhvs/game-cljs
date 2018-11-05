@@ -17,7 +17,7 @@
   []
   (let [now (js/Date.)]
     (rf/dispatch [:timer now])))
-(defonce do-timer (js/setInterval dispatch-timer-event 100))
+(defonce do-timer (js/setInterval dispatch-timer-event 500))
 
 (defn cria-maca []
   {:local [(rand-int w-max) (rand-int h-max)]

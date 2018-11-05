@@ -1,10 +1,17 @@
 (ns game-cljs.events
   (:require
-   [re-frame.core :as re-frame]
+   [re-frame.core :as rf]
    [game-cljs.db :as db]
    ))
 
-(re-frame/reg-event-db
+(rf/reg-event-db
  ::initialize-db
  (fn [_ _]
-   db/default-db))
+   {:snake (db/cria-snake)}))
+
+(rf/reg-event-db 
+  :timer                  
+  (fn [db [_ new-time]]   
+    (assoc db :snake (db/move (:snake db)))
+)) 
+

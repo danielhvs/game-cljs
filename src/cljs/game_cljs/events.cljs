@@ -7,11 +7,15 @@
 (rf/reg-event-db
  ::initialize-db
  (fn [_ _]
-   {:snake (db/cria-snake)}))
+   {:snake (db/cria-snake)
+    :maca (db/cria-maca)}))
 
 (rf/reg-event-db 
   :timer                  
   (fn [db [_ new-time]]   
-    (assoc db :snake (db/move (:snake db)))
-)) 
+    (assoc db 
+      :snake (db/proximo-estado (:snake db) (:maca db))
+      :maca (db/proximo-estado-maca (:snake db) (:maca db))
+
+))) 
 

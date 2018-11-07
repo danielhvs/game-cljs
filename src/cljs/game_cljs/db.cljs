@@ -6,7 +6,12 @@
 (def tam-ganhar 8)
 
 (def direcoes
-  {:esquerda [-1 0]
+  {
+   :esquerda [-1 0]
+   :esquerda-cima [-1 -1]
+   :esquerda-baixo [-1 1]
+   :direita-cima [1 -1]
+   :direita-baixo [1 1]
    :direita [1 0]
    :baixo [0 1]
    :cima [0 -1]})

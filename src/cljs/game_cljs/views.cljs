@@ -55,9 +55,9 @@
      [:div (str @feedback)]
      [:table [:tbody 
               [:tr
-               [:td]
+               [:td [:button {:on-click #(rf/dispatch [:muda-direcao :esquerda-cima])} "<^"]]
                [:td [:button {:on-click #(rf/dispatch [:muda-direcao :cima])} "^"]]
-               [:td]
+               [:td [:button {:on-click #(rf/dispatch [:muda-direcao :direita-cima])} "^>"]]
                ] 
               [:tr
                [:td [:button {:on-click #(rf/dispatch [:muda-direcao :esquerda])} "<"]]
@@ -65,9 +65,9 @@
                [:td [:button {:on-click #(rf/dispatch [:muda-direcao :direita])} ">"]]
                ]
               [:tr 
-               [:td]
+               [:td [:button {:on-click #(rf/dispatch [:muda-direcao :esquerda-baixo])} "<u"]]
                [:td [:button {:on-click #(rf/dispatch [:muda-direcao :baixo])} "u"]]
-               [:td]
+               [:td [:button {:on-click #(rf/dispatch [:muda-direcao :direita-baixo])} "u>"]]
                ]
               ]]
 

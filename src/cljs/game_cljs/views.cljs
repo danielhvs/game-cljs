@@ -38,12 +38,16 @@
     :y y}])
 
 (defn ->retangulo [x y cor]
-  (retangulo (* x tam-ret) (* y tam-ret) cor))
+  [retangulo (* x tam-ret) (* y tam-ret) cor])
 
 (defn desenha-mundo []
   (for [x (range db/w-max)]
         (for [y (range db/h-max)]
           (->retangulo x y "skyblue"))))
+
+(defn componente[]
+  [:canvas {:id "meu-canvas" :width "250" :height "300" :style {:border "1px solid #d3d3d3;"}}]
+)
 
 (defn main-panel []
   (let [
@@ -70,6 +74,7 @@
                [:td [:button {:on-click #(rf/dispatch [:muda-direcao :direita-baixo])} "u>"]]
                ]
               ]]
+     [:div [componente]]
 
      [:div
       [:svg 
@@ -82,4 +87,15 @@
        (desenha-maca @maca)
        (desenha-snake @snake)
        ]]]
+))
+
+
+#_(fn [db [_ nova-direcao]]   
+    (let [ctx (.getContext (.getElementById js/document "meu-canvas") "2d")]
+      (set! (.-fillStyle ctx) "rgb(255,0,0)")
+      (.beginPath ctx)
+      (.rect ctx 0 0 10 10)
+      (.fill ctx))
+    (assoc db 
+      :snake (db/vira (:snake db) nova-direcao)
 ))

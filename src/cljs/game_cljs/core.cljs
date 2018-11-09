@@ -4,6 +4,7 @@
    [re-frame.core :as re-frame]
    [game-cljs.events :as events]
    [game-cljs.views :as views]
+   [game-cljs.db :as db]
    [game-cljs.config :as config]
    ))
 
@@ -19,6 +20,6 @@
                   (.getElementById js/document "app")))
 
 (defn ^:export init []
-  (re-frame/dispatch-sync [::events/initialize-db])
+  (re-frame/dispatch-sync [::events/initialize-db [(db/cria-snake) (db/cria-maca)]])
   (dev-setup)
   (mount-root))

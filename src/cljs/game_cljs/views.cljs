@@ -48,7 +48,7 @@
 
 
 
-(def timeout-fn (atom #({})))
+(def timeout-fn (atom #(+)))
 (defn timeout []
   (js/setTimeout @timeout-fn 100)
   (js/setTimeout timeout 100))
@@ -72,7 +72,7 @@
                ] 
               [:tr
                [:td [:button {:on-click #(rf/dispatch [:muda-direcao :esquerda])} "<"]]
-               [:td [:button {:on-click #(rf/dispatch [::events/initialize-db])} "+"]]
+               [:td [:button {:on-click #(rf/dispatch [::events/initialize-db [(db/cria-snake) (db/cria-maca)]])} "+"]]
                [:td [:button {:on-click #(rf/dispatch [:muda-direcao :direita])} ">"]]
                ]
               [:tr 
@@ -94,9 +94,9 @@
        (desenha-snake @snake)
        ]
       [:div
-       [:div [:button {:on-click (fn [e] (reset! timeout-fn #(rf/dispatch [:count dec 0])))} "<"]]
-       [:div [:button {:on-click (fn [e] (reset! timeout-fn #({})))} "!"]]
-       [:div [:button {:on-click (fn [e] (reset! timeout-fn #(rf/dispatch [:count inc 999])))} ">"]]]
+       [:div [:button {:on-click (fn [e] (reset! timeout-fn #(rf/dispatch [:count dec])))} "<"]]
+       [:div [:button {:on-click (fn [e] (reset! timeout-fn #(+)))} "!"]]
+       [:div [:button {:on-click (fn [e] (reset! timeout-fn #(rf/dispatch [:count inc])))} ">"]]]
       [:div
        [:svg 
         (let [w 300 h 300]

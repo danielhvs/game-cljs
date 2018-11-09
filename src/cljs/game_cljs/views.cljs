@@ -16,6 +16,7 @@
 (defn dispatch-timer-event
   []
   (let [now (js/Date.)]
+    (rf/dispatch [:historia])
     (rf/dispatch [:timer now])))
 (defonce do-timer (js/setInterval dispatch-timer-event 200))
 
@@ -45,10 +46,20 @@
         (for [y (range db/h-max)]
           (->retangulo x y "skyblue"))))
 
+
+
+(def timeout-fn (atom #({})))
+(defn timeout []
+  (js/setTimeout @timeout-fn 100)
+  (js/setTimeout timeout 100))
+(timeout)
+
 (defn main-panel []
   (let [
         snake (rf/subscribe [:snake])
         maca (rf/subscribe [:maca])
+        snake-estado (rf/subscribe [:snake-estado])
+        maca-estado (rf/subscribe [:maca-estado])
         feedback (rf/subscribe [:feedback])
         ]
     [:div
@@ -69,11 +80,11 @@
                [:td [:button {:on-click #(rf/dispatch [:muda-direcao :baixo])} "u"]]
                [:td [:button {:on-click #(rf/dispatch [:muda-direcao :direita-baixo])} "u>"]]
                ]
-              ]]
+              ]] 
 
      [:div
       [:svg 
-       (let [w 800 h 600]
+       (let [w 300 h 300]
          {
           :view-box (str "0 0 " w " " h)
           :width w 
@@ -81,5 +92,19 @@
        (desenha-mundo)
        (desenha-maca @maca)
        (desenha-snake @snake)
-       ]]]
-))
+       ]
+      [:div
+       [:div [:button {:on-click (fn [e] (reset! timeout-fn #(rf/dispatch [:count dec 0])))} "<"]]
+       [:div [:button {:on-click (fn [e] (reset! timeout-fn #({})))} "!"]]
+       [:div [:button {:on-click (fn [e] (reset! timeout-fn #(rf/dispatch [:count inc 999])))} ">"]]]
+      [:div
+       [:svg 
+        (let [w 300 h 300]
+          {
+           :view-box (str "0 0 " w " " h)
+           :width w 
+           :height h})
+        (desenha-mundo)
+        (desenha-maca @maca-estado)
+        (desenha-snake @snake-estado)
+        ]]]]))

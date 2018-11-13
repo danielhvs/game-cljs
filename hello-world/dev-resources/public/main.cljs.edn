@@ -1,0 +1,3 @@
+{:require  [hello-world.core nightlight.repl-server]
+ :init-fns []
+ :compiler-options {}}
